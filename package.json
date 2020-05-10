@@ -4,7 +4,7 @@
   "description": "Understanding mongoDB",
   "main": "app.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "mocha test/*_test.js",
     "dev": "./node_modules/.bin/nodemon ./test/connection"
   },
   "keywords": [
@@ -14,6 +14,7 @@
   "author": "Siddharth Rawat",
   "license": "MIT",
   "dependencies": {
+    "mocha": "^7.1.2",
     "mongoose": "^5.9.13"
   },
   "devDependencies": {

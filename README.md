@@ -96,3 +96,83 @@ const MarioChar = mongoose.model('mariochar', MarioCharSchema);
 The `//create schema` code will create a new schema for the `mariochar` model based on the `MarioCharSchema`.
 
 So, everytime a user creates a new `MarioChar`, we're going to create it in `mariochar` collection, and `mongoose.model()` it based on the `MarioCharSchema`.
+
+## Intro to Mocha
+
+Mocha is a testing framework, used to perform tests within our appication to make sure everything works correctly.
+
+In our project, we'll be using `Mocha` to test our connection with the mongo database for the basic CRUD operations.
+
+What are CRUD operations? Well:
+
+- **C**reate record
+- **R**ead record
+- **U**pdate record
+- **D**elete record
+
+### Installing Mocha
+
+Use `npm` to install `Mocha`:
+
+`npm i -S mocha`
+
+Remember, we had made a `test/` folder, so this is where we'll be adding all out test scripts in Mocha.
+Let's start by creating a `demo_test.js`.
+
+> NOTE: You don't need to require `mocha` in this file, it'll work regardless of that.
+
+### Creating tests
+
+We need to describe what our tests will be like in this file. We'll use the `describe()` method, which takes two parameters:
+
+- First param : `String`, which describes the test within it, and
+
+- Second param : `function`, where all the tests occur.
+
+This is what I'm talking about:
+
+```js
+// Describe tests
+describe('some demo tests', function () {
+  // create tests
+});
+```
+
+The `it()` function describes one test.
+
+```js
+// Describe tests
+describe('some demo tests', function () {
+  // create tests
+  it('add two numbers together', function () {
+    assert(2 + 3 === 5);
+  });
+});
+```
+
+If the `assert()` evaluates to `true`, then the test `it()`, `passes`. Else, it evaluates to `false` and the test `fails`.
+To use `assert()` as above, we need to `require()` it:
+
+```js
+const assert = require('assert');
+```
+
+To run this test, we can issue the command `npm run test`. But before we can give this command, we would need to set-up the `test` script in our `package.json` file.
+
+```json
+  "scripts": {
+    "test": "mocha test/*_test.js",
+  }
+```
+
+Once this is done, run `npm run test` from the terminal :
+
+![alt text](assets/demotest.png 'demo test assert() true')
+
+In case we `assert()` to a `false` value, we get this result:
+
+```js
+assert(2 + 3 === 6);
+```
+
+![alt text](assets/demofail.png 'points to which test has failed')

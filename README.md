@@ -47,7 +47,7 @@ mongoose
   .then(() => {
     console.log('connected to local db!');
   })
-  .catch((err) => {
+  .catch(err => {
     console.log('Error:', err.message);
   });
 ```
@@ -62,3 +62,37 @@ Another thing that is important is using the new `conect()` method. The older me
     useUnifiedTopology: true,
   }
 ```
+
+## Models and Collections
+
+In MongoDB, we can habe multiple databases running at once. In each database, we can have mulitple collections to begin with.
+Each of these collections can have different models respectively. Each record of the collection of the database is based on a schema.
+
+There is a schema, which tells the model in the collection that what kind of data does it have. Every model has a unique schema realted to that model.
+
+Let's see what I'm talking about in terms of code:
+
+- Create a new folder named `models/`. We'll add our `Collections` inside this folder.
+
+- Create a file called `mariochar.js`. This will have the schema and model for creating a new Mario Character.
+
+- In `marichar.js`:
+
+```js
+const mongoose = require('mongoose');
+
+const { Schema } = mongoose.Schema;
+
+// create schema
+const MarioCharSchema = new Schema({
+  name: String,
+  weight: Number,
+});
+
+// create model
+const MarioChar = mongoose.model('mariochar', MarioCharSchema);
+```
+
+The `//create schema` code will create a new schema for the `mariochar` model based on the `MarioCharSchema`.
+
+So, everytime a user creates a new `MarioChar`, we're going to create it in `mariochar` collection, and `mongoose.model()` it based on the `MarioCharSchema`.

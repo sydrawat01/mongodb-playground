@@ -81,7 +81,7 @@ Let's see what I'm talking about in terms of code:
 ```js
 const mongoose = require('mongoose');
 
-const { Schema } = mongoose.Schema;
+const { Schema } = mongoose;
 
 // create schema
 const MarioCharSchema = new Schema({
@@ -176,3 +176,49 @@ assert(2 + 3 === 6);
 ```
 
 ![alt text](assets/demofail.png 'points to which test has failed')
+
+## Saving data to MongoDB
+
+We'll test adding data to our local db using the `test/` folder. I've renamed the `demo_test.js` file to `saving_test.js` to test saving of the new `MarioChar` to our local db.
+
+```js
+const { MarioChar } = require('../models/mariochar');
+
+describe('save records', function () {
+  it('saves a record to the db', function () {
+    let char = new MarioChar({
+      name: 'Luigi',
+      weight: 82, // can skip this if we want
+    });
+    char.save(); // saves it to the local db to which we connected previously
+  });
+});
+```
+
+We need to`assert()` that the `save()` is successful, but we **CANNOT** do something like this:
+
+```js
+assert(char.save());
+```
+
+This is beacuse `save()` is an **asynchronous** function. So we have to wait for `save()` to finish.
+
+So, mongoose knows that `save()` is an async request, it implements the `promise` interface for us.
+
+This lets us do the following:
+
+```js
+char.save().then(() => {
+  // assert(char.isNew === false);
+  assert(!char.isNew);
+  done();
+});
+```
+
+The `char.isNew` returns `true` when we've created the `char` locally but not saved in the local db. It returns `false` when the `char` has been created and save to local db as well.
+
+So here, we're checking this for `false` to verify that the new `char` is created and successfully saved into the local db as well.
+
+Mocha needs to know when we've completed our test. It does not know that automatically know when the `char` is saved. To do that, we add `done()` telling Mocha we're done with the current test and it can move on to the other tests.
+
+![alt text](assets/save.png 'save the new char to the local db')

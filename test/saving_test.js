@@ -4,18 +4,23 @@ const assert = require('assert');
 const MarioChar = require('../models/mariochar.js');
 
 // Describe tests
-describe('Saving Records', function () {
+describe('Saving records', function () {
   // create tests
-  it('saves record to a database', function () {
+  it('Saves a record to the database', function (done) {
     const char = new MarioChar({
       name: 'Luigi',
       weight: 81,
     });
     // char.save(); // save it to the db to which we've connected.
-    char.save().then(() => {
-      assert(!char.isNew);
-      done();
-    });
+    char
+      .save()
+      .then(() => {
+        assert(!char.isNew);
+        done();
+      })
+      .catch(err => {
+        console.log('Error: ', err.message);
+      });
   });
 
   // next test

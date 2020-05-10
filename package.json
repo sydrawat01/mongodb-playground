@@ -1,0 +1,22 @@
+{
+  "name": "mongo-playground",
+  "version": "1.0.0",
+  "description": "Understanding mongoDB",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "./node_modules/.bin/nodemon ./test/connection"
+  },
+  "keywords": [
+    "mongo",
+    "mongodb"
+  ],
+  "author": "Siddharth Rawat",
+  "license": "MIT",
+  "dependencies": {
+    "mongoose": "^5.9.13"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.3"
+  }
+}

@@ -222,3 +222,21 @@ So here, we're checking this for `false` to verify that the new `char` is create
 Mocha needs to know when we've completed our test. It does not know that automatically know when the `char` is saved. To do that, we add `done()` telling Mocha we're done with the current test and it can move on to the other tests.
 
 ![alt text](assets/save.png 'save the new char to the local db')
+
+## [Robo-3T](https://robomongo.org)
+
+Robo-3T was previously known as Robomongo.
+
+Install Robo-3T using `homebrew` on MacOS:
+
+`homebrew cask install robo-3t`
+
+After the installation is complete, run the Robo-3T app, and create a new connection with the default settings in-palce.
+
+Connect to this new connection, and on the left hand pane, we can see all the databases on our system ,including the one we created using this project!
+
+![alt text](assets/robo-3t.png 'list of dbs on robo-3t')
+
+On double-clicking the `Collections` : `marichar`, we can see a lot of records laready in the collection. This is because the number of times we ran `npm run test`, we added a new record of `char` and used `save()` to save it to our `testaroo` db. Mongo assigns a unique ID to the object we add into the collection each time. Hence there are so many entries in the `marichar` collecion.
+
+![alt text](assets/mariochar.png 'data in the collection marichar')

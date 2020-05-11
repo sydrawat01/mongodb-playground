@@ -348,3 +348,36 @@ describe('Finding records', function () {
 Run `npm run test` :
 
 ![alt text](assets/findOne.png 'Finding one record test')
+
+## Finding records using ObjectID
+
+We'll find the records using the `_id` property of the record, which can be seen on the collection `mariochars` in Robo-3T.
+
+![alt text](assets/id.png 'ID property of a record')
+
+You should have noticed that the `_id` is an `Object{}` type and not a `String` type!
+
+Mongo has not problem identifying this as a string, but while asserting, we will run into an error if we do not convert these objects into strings.
+
+Let's do it:
+
+```js
+  // findOne() record by ID from DB test
+  it('Find one record from the database using ID', function (done) {
+    MarioChar.findOne({ _id: char._id })
+      .then(result => {
+        assert(result._id.toString() === char._id.toString());
+        done();
+      })
+      .catch(err => {
+        console.log('Error: ', err.message);
+      });
+  });
+});
+```
+
+> NOTE: Make sure you make the `char` variable global, by declaring it outside the `beforeEach()` and inside the `describe()` functions.
+
+Run `npm run test`:
+
+![alt text](assets/find_id.png 'Find a record with Object ID')

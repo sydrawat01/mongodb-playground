@@ -6,10 +6,10 @@ const MarioChar = require('../models/mariochar.js');
 // Describe tests
 describe('Finding records', function () {
   // create tests
-
+  let char;
   // hooks
   beforeEach(function (done) {
-    const char = new MarioChar({
+    char = new MarioChar({
       name: 'Luigi',
       weight: 81,
     });
@@ -36,5 +36,15 @@ describe('Finding records', function () {
       });
   });
 
-  // next test
+  // findOne() record by ID from DB test
+  it('Find one record from the database using ID', function (done) {
+    MarioChar.findOne({ _id: char._id })
+      .then(result => {
+        assert(result._id.toString() === char._id.toString());
+        done();
+      })
+      .catch(err => {
+        console.log('Error: ', err.message);
+      });
+  });
 });

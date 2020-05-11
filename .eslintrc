@@ -19,7 +19,8 @@
     "class-methods-use-this": "off",
     "no-shadow": "warn",
     "mocha/no-top-level-hooks": "off",
-    "mocha/no-hooks-for-single-case": "off"
+    "mocha/no-hooks-for-single-case": "off",
+    "no-underscore-dangle": "warn"
   },
   "parser": "babel-eslint",
   "parserOptions": {

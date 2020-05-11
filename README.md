@@ -54,7 +54,7 @@ mongoose
 
 If you do not have a db created, the connection string will create one for you. Notice the `mongodb://localhost:27017/testdb` string? The `testdb` is the local db that is not created yet, but this connection string will create a db called `testdb` without requiring you to worry about creating a local db manually.
 
-Another thing that is important is using the new `conect()` method. The older methods are noe depriciated, and now the connection string requires you to add two important parameters as well while connecting to any local or remote db:
+Another thing that is important is using the new `conect()` method. The older methods are noe deprecated, and now the connection string requires you to add two important parameters as well while connecting to any local or remote db:
 
 ```js
 {
@@ -430,7 +430,7 @@ We need to add the appropriate `catch()` blocks for the `Promises` that we are u
 We also get a warning saying :
 
 ```text
-(node:11281) DeprecationWarning: Mongoose: `findOneAndUpdate()` and `findOneAndDelete()`without the `useFindAndModify` option set to false are deprecated.
+(node:11281) DeprecationWarning: Mongoose: `findOneAndUpdateMany()` and `findOneAndDelete()`without the `useFindAndModify` option set to false are deprecated.
 See: https://mongoosejs.com/docs/deprecations.html#findandmodify (Use `node --trace-deprecation ...` to show where the warning was created)
 ```
 
@@ -443,9 +443,9 @@ This will update the connection properties and get rid of this warning.
 
 The various methods to update include:
 
-- `char.update()`
-- `marioChar.update()`
-- `MarioChar.findOneandUpdate()`
+- `char.updateMany()`
+- `marioChar.updateMany()`
+- `MarioChar.findOneandUpdateMany()`
 
 These above functuions are almost similar in terms of properties to deleting records. The only difference is that these functions update the records instead of deleting them.
 
@@ -454,16 +454,16 @@ Apart from the `criteria` arguement in these functions, we also pass a second pa
 ### [Process]
 
 - Create and save a new record in db.
-- Use `findOneAndUpdate()` to update the name of the record.
+- Use `findOneAndUpdateMany()` to update the name of the record.
 - Try to `findOne` record in the db (the one we just updated).
 - Assert that the result has the updated property value.
 
 Let's start off by creating a new file for this test : `updating_test.js`
 
 ```js
-  // findOneAndUpdate() record from DB test
+  // findOneAndUpdateMany() record from DB test
   it('Update one record in the db', function (done) {
-    MarioChar.findOneAndUpdate({ name: 'Luigi' }, { name: 'Princess Peach', weight: 51 })
+    MarioChar.findOneAndUpdateMany({ name: 'Luigi' }, { name: 'Princess Peach', weight: 51 })
       .then(() => {
         MarioChar.findOne({ _id: char._id })
           .then(result => {
@@ -495,3 +495,51 @@ And OH! We have an error!
 If we look at the record in Robo-3T, we can see that the record has been updated :
 
 ![alt text](assets/robo-update.png 'Updated record with name and weight on Robo-3T')
+
+## Update Operators
+
+The `update` operator helps us update our fields in the records in a certain way.
+
+To fetch all the records, we use the `.updateMany()` method. To update all the records, we leave the first param empty.
+
+> NOTE: The `update()` method has been deprecated. Use `updateOne()`, `updateMany()` or `bulkWrite()` instead.
+
+In the second parameteer, we'll use the `increment operator`, i.e `$inc` in the following manner:
+
+```js
+MarioChar.updateMany({}, { $inc: { weight: +1 } });
+/* OR
+ * MarioChar.updateMany({}, { $inc: { weight: 1 } });
+ * works without the + as well for positive increments!
+ */
+```
+
+Notice how we increment the `weight` property of the record using `+1`.
+
+If we wanted to increment the weight by `+5`, we just say `{weight : +5}`. To reduce it, just use a negative number.
+
+[updating_test.js]
+
+```js
+// Increment weight by 1
+it('Increments weight by 1', function (done) {
+  MarioChar.updateMany({}, { $inc: { weight: +1 } })
+    .then(() => {
+      MarioChar.findOne({ _id: char._id })
+        .then(result => {
+          assert(result.weight === 51);
+          done();
+        })
+        .catch(err => {
+          console.log('Error:', err.msg);
+        });
+    })
+    .catch(err => {
+      console.log('Error: ', err.message);
+    });
+});
+```
+
+![alt text](assets/update-operator.png 'updating records using the increment operator')
+
+To explore more on MongoDB operators, check out the [official documentation](https://docs.mongodb.com/manual/reference/operator/update/).

@@ -41,4 +41,22 @@ describe('Updating records', function () {
         console.log('Error: ', err.message);
       });
   });
+
+  // Increment weight by 1
+  it('Increments weight by 1', function (done) {
+    MarioChar.updateMany({}, { $inc: { weight: +1 } })
+      .then(() => {
+        MarioChar.findOne({ _id: char._id })
+          .then(result => {
+            assert(result.weight === 82);
+            done();
+          })
+          .catch(err => {
+            console.log('Error:', err.msg);
+          });
+      })
+      .catch(err => {
+        console.log('Error: ', err.message);
+      });
+  });
 });

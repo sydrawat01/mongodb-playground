@@ -5,7 +5,7 @@
   "main": "app.js",
   "scripts": {
     "test": "mocha",
-    "dev": "./node_modules/.bin/nodemon ./test/connection"
+    "dev": "./node_modules/.bin/nodemon ./test/"
   },
   "keywords": [
     "mongo",

@@ -9,6 +9,6 @@ const MarioCharSchema = new Schema({
 });
 
 // model
-const MarioChar = mongoose.model('marichar', MarioCharSchema);
+const MarioChar = mongoose.model('mariochar', MarioCharSchema);
 
 module.exports = MarioChar;

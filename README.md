@@ -240,3 +240,30 @@ Connect to this new connection, and on the left hand pane, we can see all the da
 On double-clicking the `Collections` : `marichar`, we can see a lot of records laready in the collection. This is because the number of times we ran `npm run test`, we added a new record of `char` and used `save()` to save it to our `testaroo` db. Mongo assigns a unique ID to the object we add into the collection each time. Hence there are so many entries in the `marichar` collecion.
 
 ![alt text](assets/mariochar.png 'data in the collection marichar')
+
+## Dropping a collection before each test
+
+We need to delete the data for `mariochar` collection whenever we run the `saving_test.js` file. Since everytime we run the file, we create a new `char` of `mariochar` collection, and monogodb creates a new entry into the db with a unique ID.
+
+So everytime we run the tesst to `save()` an entry into a collection, we need to drop the data inside that collection, or to simply say: drop the collection.
+
+Here's how we do it:
+[connection.js]
+
+```js
+// drop the characters collection before each test
+beforeEach(function () {
+  //drop the collection
+  mongoose.connection.db.dropCollection('mariochars', () => {
+    done();
+  });
+});
+```
+
+Notice how we user `mariochars`, **[plural]**, to point to the specific collection. Mongo usually _pluralizes_ our model (collection here), because it assumes we'll have more than one record in it, so it makes sense to pluralize.
+
+Remember, `drop()` is an asynchronous request as well. So we'll add the `done()` function to indicate that the test has been complete to notify mongodb.
+
+Now when we run `npm run test`, we can see on the Robo-3T app that our collection `mariochars` has only one entry each time wee run the test. So ideally `beforeEach()` will drop the collection `mariochars` before anything can be saved again into that collection.
+
+The `beforeEach()` hook will run before any of the test suites are run, so here in our case, the `saving_test.js` file has a test suite `Saving records`, which will run after the `mariochars` collection is dropped, hence giving us the desired functionality.

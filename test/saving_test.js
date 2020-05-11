@@ -11,7 +11,6 @@ describe('Saving records', function () {
       name: 'Luigi',
       weight: 81,
     });
-    // char.save(); // save it to the db to which we've connected.
     char
       .save()
       .then(() => {

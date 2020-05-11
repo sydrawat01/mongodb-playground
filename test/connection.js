@@ -14,3 +14,11 @@ before(function (done) {
       console.log('error', err.message);
     });
 });
+
+// Drop the characters colletion before each test
+beforeEach(function (done) {
+  // drop a collection
+  mongoose.connection.db.dropCollection('mariochars', () => {
+    done();
+  });
+});

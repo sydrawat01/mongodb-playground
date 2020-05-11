@@ -267,3 +267,84 @@ Remember, `drop()` is an asynchronous request as well. So we'll add the `done()`
 Now when we run `npm run test`, we can see on the Robo-3T app that our collection `mariochars` has only one entry each time wee run the test. So ideally `beforeEach()` will drop the collection `mariochars` before anything can be saved again into that collection.
 
 The `beforeEach()` hook will run before any of the test suites are run, so here in our case, the `saving_test.js` file has a test suite `Saving records`, which will run after the `mariochars` collection is dropped, hence giving us the desired functionality.
+
+## Finding Records
+
+We'll be focusing on two methods:
+
+- `find(criteria)`
+
+- `findOne(criteria)`
+
+The names are self explanatory, but just in case you're wondering, `find()` will return all the records with the specified `criteria`, whereas `findOne()` will return only one, first instance of the records that meets the specified `criteria`.
+
+These functions a re different from `save()`, since these functions work on the model itself, whereas the `save()` works on the instance of that model.
+
+Didn't understand? Let's see:
+
+- The `save()` method was on a single instance:
+
+  ```js
+  myChar = new MarioChar({
+    name: 'Luigi',
+  });
+  myChar.save();
+  ```
+
+- The `find()` methods are on the model:
+
+  ```js
+  MarioChar.find({
+    name: 'Luigi',
+  });
+  ```
+
+We'll start by creating a file for testing the `find()` methods on our model `MarioChar`:
+
+`finding_test.js`
+
+```js
+const assert = require('assert');
+
+const MarioChar = require('../models/mariochar.js');
+
+// Describe tests
+describe('Finding records', function () {
+  // create tests
+
+  // hooks
+  beforeEach(function (done) {
+    const char = new MarioChar({
+      name: 'Luigi',
+      weight: 81,
+    });
+    char
+      .save()
+      .then(() => {
+        assert(!char.isNew);
+        done();
+      })
+      .catch(err => {
+        console.log('Error: ', err.message);
+      });
+  });
+
+  // findOne() test
+  it('Find one record from the database', function (done) {
+    MarioChar.findOne({ name: 'Luigi' })
+      .then(result => {
+        assert(result.name === 'Luigi');
+        done();
+      })
+      .catch(err => {
+        console.log('Error: ', err.message);
+      });
+  });
+
+  // next test
+});
+```
+
+Run `npm run test` :
+
+![alt text](assets/findOne.png 'Finding one record test')

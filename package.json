@@ -4,8 +4,8 @@
   "description": "Understanding mongoDB",
   "main": "app.js",
   "scripts": {
-    "test": "mocha",
-    "dev": "./node_modules/.bin/nodemon ./test/"
+    "test": "mocha --exit",
+    "dev": "./node_modules/.bin/nodemon ./test/connection"
   },
   "keywords": [
     "mongo",

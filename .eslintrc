@@ -20,7 +20,7 @@
     "no-shadow": "warn",
     "mocha/no-top-level-hooks": "off",
     "mocha/no-hooks-for-single-case": "off",
-    "no-underscore-dangle": "warn"
+    "no-underscore-dangle": "off"
   },
   "parser": "babel-eslint",
   "parserOptions": {

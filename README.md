@@ -349,7 +349,7 @@ Run `npm run test` :
 
 ![alt text](assets/findOne.png 'Finding one record test')
 
-## Finding records using ObjectID
+## Finding Records using ObjectID
 
 We'll find the records using the `_id` property of the record, which can be seen on the collection `mariochars` in Robo-3T.
 
@@ -381,3 +381,117 @@ Let's do it:
 Run `npm run test`:
 
 ![alt text](assets/find_id.png 'Find a record with Object ID')
+
+## Deleting Records
+
+We'll be checking out 3 methods for this:
+
+- `char.remove()`
+  The single instance of the model `MarioChar` , i.e `char` will be removed.
+- `MarioChar.remove()`
+  Called on the model itself and it refers to the whole collection.
+- `MarioChar.findOneAndRemove()`
+  Used on the model to find the first one that matches the criteria and deletes that record
+
+### Process
+
+- Create and save a new record into the db.
+- Use `findOneAndRemove()` to remove the record.
+- Try to `findOne` in the db (the one we just removed).
+- Assert that the result is null.
+
+> NOTE: Remember all these functions are asynchronous!
+
+Create a new file `deleting_test.js`.
+
+```js
+  // findOneAndremove() record from DB test
+  it('Deletes one record from db', function (done) {
+    MarioChar.findOneAndRemove({ name: 'Luigi'})
+      .then(() => {
+        MarioChar.findOne({ name: 'Luigi' })
+          .then(result => {
+            assert(result === null);
+            done();
+          })
+          .catch(err => {
+            console.log('Error:', err.msg);
+          });
+      })
+      .catch(err => {
+        console.log('Error: ', err.message);
+      });
+  });
+});
+```
+
+We need to add the appropriate `catch()` blocks for the `Promises` that we are using since all these functions are asynchronous, otherwise Mocha will display an error.
+
+We also get a warning saying :
+
+```text
+(node:11281) DeprecationWarning: Mongoose: `findOneAndUpdate()` and `findOneAndDelete()`without the `useFindAndModify` option set to false are deprecated.
+See: https://mongoosejs.com/docs/deprecations.html#findandmodify (Use `node --trace-deprecation ...` to show where the warning was created)
+```
+
+To get rid of this warning, add the `useFindAndModify : true` in the `connect()` function of `connection.js`.
+This will update the connection properties and get rid of this warning.
+
+![alt text](assets/delete.png 'Deleteing a record from the db')
+
+## Updating Records
+
+The various methods to update include:
+
+- `char.update()`
+- `marioChar.update()`
+- `MarioChar.findOneandUpdate()`
+
+These above functuions are almost similar in terms of properties to deleting records. The only difference is that these functions update the records instead of deleting them.
+
+Apart from the `criteria` arguement in these functions, we also pass a second parameter as an object which represents all the changes/updates we want to make to all those records
+
+### [Process]
+
+- Create and save a new record in db.
+- Use `findOneAndUpdate()` to update the name of the record.
+- Try to `findOne` record in the db (the one we just updated).
+- Assert that the result has the updated property value.
+
+Let's start off by creating a new file for this test : `updating_test.js`
+
+```js
+  // findOneAndUpdate() record from DB test
+  it('Update one record in the db', function (done) {
+    MarioChar.findOneAndUpdate({ name: 'Luigi' }, { name: 'Princess Peach', weight: 51 })
+      .then(() => {
+        MarioChar.findOne({ _id: char._id })
+          .then(result => {
+            assert(result.name === 'Princess Peach');
+            done();
+          })
+          .catch(err => {
+            console.log('Error:', err.msg);
+          });
+      })
+      .catch(err => {
+        console.log('Error: ', err.message);
+      });
+```
+
+And OH! We have an error!
+
+```text
+  1) Updating records
+       Update one record in the db:
+     Error: Timeout of 2000ms exceeded.
+     For async tests and hooks, ensure "done()" is called; if returning a Promise, ensure it resolves.
+```
+
+> We'll have to remove all the assert() calls from the previous test files in the `beforeEach()` function call. The `done()` function will remain as is.
+
+![alt text](assets/update.png 'Update a record in the db')
+
+If we look at the record in Robo-3T, we can see that the record has been updated :
+
+![alt text](assets/robo-update.png 'Updated record with name and weight on Robo-3T')

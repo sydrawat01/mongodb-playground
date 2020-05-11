@@ -5,7 +5,7 @@ const URI = 'mongodb://localhost:27017/testaroo';
 // connect to mongodb
 before(function (done) {
   mongoose
-    .connect(URI, { useNewUrlParser: true, useUnifiedTopology: true })
+    .connect(URI, { useNewUrlParser: true, useUnifiedTopology: true, useFindAndModify: false })
     .then(() => {
       console.log('You have connected to TESTAROO db!');
       done();

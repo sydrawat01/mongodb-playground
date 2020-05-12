@@ -504,7 +504,7 @@ To fetch all the records, we use the `.updateMany()` method. To update all the r
 
 > NOTE: The `update()` method has been deprecated. Use `updateOne()`, `updateMany()` or `bulkWrite()` instead.
 
-In the second parameteer, we'll use the `increment operator`, i.e `$inc` in the following manner:
+In the second parameter, we'll use the `increment operator`, i.e `$inc` in the following manner:
 
 ```js
 MarioChar.updateMany({}, { $inc: { weight: +1 } });
